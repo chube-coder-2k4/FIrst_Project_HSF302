@@ -1,7 +1,9 @@
 package fpt.java.demo_day1_hsf302.controller;
 
 import fpt.java.demo_day1_hsf302.dto.request.UserRequestDTO;
+import fpt.java.demo_day1_hsf302.dto.response.ResponseSuccess;
 import jakarta.validation.constraints.Min;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,43 +13,50 @@ import java.util.List;
 @RequestMapping("/user")
 @Validated
 public class UserController {
+
     @PostMapping("/")
-    public String addUser(@Validated @RequestBody UserRequestDTO user) {
+//    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseSuccess addUser(@Validated @RequestBody UserRequestDTO user) {
         System.out.println("UserController addUser: " + user.getFirstName());
-        return "UserController added";
+        return new ResponseSuccess(HttpStatus.CREATED, "User added successfully", 1);
     }
 
     @PutMapping("/{userid}")
-    public String updateUser(@PathVariable int userid, @RequestBody UserRequestDTO user) {
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseSuccess updateUser(@PathVariable int userid, @RequestBody UserRequestDTO user) {
         System.out.println("UserController updateUser: " + userid);
-        return "UserController updated";
+        return new ResponseSuccess(HttpStatus.ACCEPTED, "User updated successfully");
     }
 
     @PatchMapping("/{userid}")
-    public String patchUser(@Min(1) @PathVariable int userid, @RequestParam boolean status) {
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseSuccess patchUser(@Min(1) @PathVariable int userid, @RequestParam boolean status) {
         System.out.println("UserController patchUser: " + userid);
-        return "UserController patched";
+        return new ResponseSuccess(HttpStatus.ACCEPTED, "UserController patched");
     }
 
     @DeleteMapping("/{userid}")
-    public String deleteUser(@PathVariable @Min(value = 1,message = "User must be > 0") int userid) {
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseSuccess deleteUser(@PathVariable @Min(value = 1,message = "User must be > 0") int userid) {
         System.out.println("UserController deleteUser: " + userid);
-        return "UserController deleted";
+        return new ResponseSuccess(HttpStatus.NO_CONTENT, "UserController deleted");
     }
 
     @GetMapping("/{userid}")
-    public UserRequestDTO getUser(@PathVariable @Min(value = 1,message = "User must be > 0") int userid) {
+//    @ResponseStatus(HttpStatus.OK)
+    public ResponseSuccess getUser(@PathVariable @Min(value = 1,message = "User must be > 0") int userid) {
         System.out.println("UserController getUser: " + userid);
-        return new UserRequestDTO("Huy","Java","qhuy@gmail.com","0373777412");
+        return new ResponseSuccess(HttpStatus.OK, "User get successfully", new UserRequestDTO("Huy","Java","qhuy@gmail.com","0373777412"));
     }
 
     @GetMapping("/list")
-    public List<UserRequestDTO> getUsers(@RequestParam(defaultValue = "0", required = false) int pageNo,
+//    @ResponseStatus(HttpStatus.OK)
+    public ResponseSuccess getUsers(@RequestParam(defaultValue = "0", required = false) int pageNo,
                                @Min(10) @RequestParam(defaultValue = "20", required = false) int pageSize) {
         System.out.println("UserController getUsers");
-        return List.of(new UserRequestDTO("Huy","Java","qhuy@gmail.com","0373777412"),
+        return new ResponseSuccess(HttpStatus.OK,"get list success",List.of(new UserRequestDTO("Huy","Java","qhuy@gmail.com","0373777412"),
                 new UserRequestDTO("Nhi","Java","nhi@gmail.com","0935989931"),
-                new UserRequestDTO("Hai","Python","hai@gmail.com","0218312842"));
+                new UserRequestDTO("Hai","Python","hai@gmail.com","0218312842")));
     }
 
 
