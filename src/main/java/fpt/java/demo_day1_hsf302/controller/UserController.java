@@ -2,6 +2,8 @@ package fpt.java.demo_day1_hsf302.controller;
 
 import fpt.java.demo_day1_hsf302.dto.request.UserRequestDTO;
 import fpt.java.demo_day1_hsf302.dto.response.ResponseData;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -12,8 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Validated
+@Tag(name = "USER CONTROLLER BY HUY", description = "User management operations")
 public class UserController {
 
+    @Operation(summary = "Add user by Huy", description = "Add a new user to the system")
     @PostMapping("/")
 //    @ResponseStatus(HttpStatus.CREATED)
     public ResponseData<Integer> addUser(@Validated @RequestBody UserRequestDTO user) {
@@ -57,6 +61,11 @@ public class UserController {
         return new ResponseData<>(HttpStatus.OK.value(),"get list success",List.of(new UserRequestDTO("Huy","Java","qhuy@gmail.com","0373777412"),
                 new UserRequestDTO("Nhi","Java","nhi@gmail.com","0935989931"),
                 new UserRequestDTO("Hai","Python","hai@gmail.com","0218312842")));
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello, World!";
     }
 
 
